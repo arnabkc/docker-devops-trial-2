@@ -18,6 +18,7 @@ function fib(index) {
 } 
 
 sub.on('message', (channel, message) => {
+    console.log('[worker:index.js] message: ' + message);
     redisClient.hset('values', message, fib(parseInt(message)));
 });
 

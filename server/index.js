@@ -22,10 +22,11 @@ const pgClient = new Pool({
 });
 
 pgClient.on('error', () => {
-    console.log('Lost pf connection');
+    console.log('Lost PG connection');
 });
 
-pgClient.query('CREATE TABLE IF NOT EXISTS values (Number INT')
+pgClient
+    .query('CREATE TABLE IF NOT EXISTS values (Number INT)')
     .catch (err => console.log(err));
 
 // Redis Client Setup
@@ -44,22 +45,22 @@ app.get('/', (req, res) => {
     res.send('Hello!');
 });
 
-app.get('/values/all', async(req, res) => {
+app.get('/values/all', async (req, res) => {
     const values = await pgClient.query('SELECT * FROM values');
 
     res.send(values.rows)
 });
 
-app.get('/values/current', async(req, res) => {
+app.get('/values/current', async (req, res) => {
     redisClient.hgetall('values', (err, values) => {
         res.send(values);
     })
 });
 
-app.post('/values', async(req, res) => {
-    const index = parseInt(req.body.index);
+app.post('/values', async (req, res) => {
+    const index = req.body.index;
 
-    if (index > 40) {
+    if (parseInt(index) > 40) {
         return res.status(422).send('Index too large. Not supported.');
     }
 
@@ -67,9 +68,9 @@ app.post('/values', async(req, res) => {
 
     redisPublsher.publish('insert', index);
 
-    pgClient.query('INSERT INTO VALUES(number) VALUES($1)', [index]);
+    pgClient.query('INSERT INTO values(number) VALUES($1)', [index]);
 
-    res.send({woring: true});
+    res.send({working: true});
 });
 
 app.listen(5000, err => {
