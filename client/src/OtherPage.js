@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export default () => {
     return (
         <div>
-            Test page for HTML5 Push message demonstration.
+            I am in some other page
             <Link to="/">Go Back to Home page</Link>
         </div>
     );
