@@ -8,8 +8,8 @@ before_install:
   - docker build -t arnabc/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  # - docker run -e CI=true arnabc/react-test npm run test -- --coverage
-  - docker run arnabc/react-test npm run test -- --coverage
+  - docker run -e CI=true arnabc/react-test npm test
+  # - docker run arnabc/react-test npm run test -- --coverage
 
 after_success:
   - docker build -t arnabc/multi-client ./client
