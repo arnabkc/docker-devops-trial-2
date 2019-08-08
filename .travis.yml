@@ -5,26 +5,26 @@ services:
   - docker
 
 before_install:
-  - docker build -t arnabc/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t arnabc169/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run -e CI=true arnabc/react-test npm test
+  - docker run -e CI=true arnabc169/react-test npm test
   # - docker run arnabc/react-test npm run test -- --coverage
 
 after_success:
-  - docker build -t arnabc/multi-client ./client
-  - docker build -t arnabc/multi-nginx ./nginx
-  - docker build -t arnabc/multi-server ./server
-  - docker build -t arnabc/multi-worker ./worker
+  - docker build -t arnabc169/multi-client ./client
+  - docker build -t arnabc169/multi-nginx ./nginx
+  - docker build -t arnabc169/multi-server ./server
+  - docker build -t arnabc169/multi-worker ./worker
 
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" -- pasword-stdin
 
   # Take those images and push them to docker hub
-  - docker push arnabc/multi-client
-  - docker push arnabc/multi-nginx
-  - docker push arnabc/multi-server
-  - docker push arnabc/multi-worker
+  - docker push arnabc169/multi-client
+  - docker push arnabc169/multi-nginx
+  - docker push arnabc169/multi-server
+  - docker push arnabc169/multi-worker
 
 # deploy:
 #   provider: elasticbeanstalk
